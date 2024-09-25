@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'home_screen.dart';
 import 'favorites_screen.dart';
+import 'favorite_recipes.dart';
 
 void main() {
-  runApp(RecipeBookApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => FavoriteRecipes(),
+      child: RecipeBookApp(),
+    ),
+  );
 }
 
 class RecipeBookApp extends StatelessWidget {

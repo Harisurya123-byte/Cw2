@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'favorite_recipes.dart';
 
-class DetailsScreen extends StatefulWidget {
+class DetailsScreen extends StatelessWidget {
   final String recipeName;
 
   DetailsScreen({required this.recipeName});
 
   @override
-  _DetailsScreenState createState() => _DetailsScreenState();
-}
-
-class _DetailsScreenState extends State<DetailsScreen> {
-  bool isFavorite = false;
-
-  @override
   Widget build(BuildContext context) {
+    final favoriteRecipes = Provider.of<FavoriteRecipes>(context);
+    final isFavorite = favoriteRecipes.isFavorite(recipeName);
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.recipeName),
+        title: Text(recipeName),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -24,7 +22,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Ingredients for ${widget.recipeName}',
+              'Ingredients for $recipeName',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             // Add recipe ingredients here
@@ -35,9 +33,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
               icon: Icon(isFavorite ? Icons.favorite : Icons.favorite_border),
               label: Text(isFavorite ? 'Unmark as Favorite' : 'Mark as Favorite'),
               onPressed: () {
-                setState(() {
-                  isFavorite = !isFavorite;
-                });
+                favoriteRecipes.toggleFavorite(recipeName);
               },
             ),
           ],
